@@ -1,0 +1,10 @@
+[Unit]
+Description=Run the research digest every morning at 07:00 Bishkek time
+
+[Timer]
+OnCalendar=*-*-* 07:00:00 Asia/Bishkek
+Persistent=true
+RandomizedDelaySec=60
+
+[Install]
+WantedBy=timers.target

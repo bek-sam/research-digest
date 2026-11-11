@@ -1,0 +1,18 @@
+[Unit]
+Description=Daily AI research digest
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=ubuntu
+WorkingDirectory=/home/ubuntu/research-digest
+EnvironmentFile=/home/ubuntu/research-digest/secrets/digest.env
+Environment=PATH=/home/ubuntu/.local/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/home/ubuntu/research-digest/.venv/bin/python digest.py
+StandardOutput=append:/home/ubuntu/research-digest/logs/digest.log
+StandardError=append:/home/ubuntu/research-digest/logs/digest.log
+Nice=10
+MemoryHigh=450M
+MemoryMax=600M
+TimeoutStartSec=3h

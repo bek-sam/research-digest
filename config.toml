@@ -1,0 +1,93 @@
+# What the digest looks for. Edit freely; the next run picks it up.
+
+[profile]
+# Plain-language description of your interests. Claude scores every item against this.
+interests = """
+AI agents and LLM tools: agent frameworks, multi-agent systems, tool use / function calling,
+MCP servers and clients, coding agents, agent memory and planning, RAG, evals and benchmarks
+for agents, LLM inference/serving tools, prompt and context engineering, open-source models
+that matter for building agents. Prefer practical, usable work (code released, real results)
+over pure theory or incremental benchmark tweaks.
+"""
+# Things you do NOT want.
+avoid = """
+Crypto/web3 wrappers, 'awesome-lists' with no content, thin ChatGPT wrappers, prompt collections,
+domain-specific papers that only apply an LLM to a niche field without new agent/LLM-tool insight.
+"""
+
+[arxiv]
+categories = ["cs.AI", "cs.CL", "cs.LG", "cs.MA", "cs.SE", "cs.IR"]
+keywords = ["agent", "agentic", "large language model", "LLM", "tool use", "function calling",
+            "retrieval-augmented", "multi-agent", "MCP", "Model Context Protocol"]
+max_results = 400   # newest papers pulled from the arXiv API per run
+
+[github]
+topics = ["ai-agents", "llm", "agents", "mcp", "llm-agent", "rag", "agentic-ai",
+          "mcp-server", "llm-tools", "multi-agent", "coding-agent", "llmops"]
+new_repo_days = 10        # "new" = created in the last N days
+new_repo_min_stars = 40
+established_min_stars = 800   # older repos only show up when their stars grow fast
+
+[hackernews]
+queries = ["LLM", "AI agent", "agents", "MCP", "Claude", "open-source model", "RAG"]
+min_points = 80
+
+[screen]
+triage = true            # stage 1: cheap model rates every item, then the best go to the main model
+triage_model = "haiku"
+triage_batch = 100
+triage_min = 4           # triage relevance below this is dropped
+# safety net: items mentioning any of these (whole word, prefix match) are never dropped by triage
+keep_terms = ["agent", "agentic", "mcp", "model context protocol", "tool use", "function calling",
+              "multi agent", "coding assistant", "rag", "retrieval augmented"]
+parallel = 4             # concurrent claude calls
+
+[stars]
+enabled = true           # star-quality check (forks / issues vs stars) for shortlisted repos
+
+[deep]
+enabled = true           # deep review of the best papers (full text) and repos (README + health)
+model = "opus"
+effort = "medium"
+extra = 3                # review this many more than will be shown, so weak ones can be dropped
+parallel = 3
+
+[github_trending]
+enabled = true
+languages = ["", "python", "typescript"]   # "" = all languages
+
+[reddit]
+enabled = true
+subreddits = ["LocalLLaMA", "MachineLearning", "ClaudeAI", "AI_Agents", "LLMDevs"]
+limit = 100              # one combined feed, ranked by votes across all subs
+
+[lobsters]
+enabled = true
+tags = ["ai"]               # low volume (a few a week), cheap to keep
+days = 3
+min_score = 5
+
+[hf_models]
+enabled = true
+pipelines = ["text-generation", "image-text-to-text", "any-to-any", "text-to-speech", "automatic-speech-recognition"]
+min_likes = 50
+limit = 80
+
+[learning]
+enabled = true           # refresh profile_learned.md from your 👍/👎 votes
+min_new_votes = 5        # ...after this many new votes
+max_days = 7             # ...or after a week with at least one new vote
+model = "opus"
+
+[weekly]
+enabled = true           # weekly trend report after the daily digest
+day = "sun"
+model = "opus"
+
+[digest]
+papers = 6
+repos = 6
+news = 6
+models = 3
+candidates_per_source = 40   # shortlist size per source for the main model (news gets half)
+model = "opus"   # Claude Code model alias: opus / sonnet / haiku

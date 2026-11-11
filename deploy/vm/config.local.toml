@@ -1,0 +1,7 @@
+# Machine overrides for the 1 GB Oracle VM (copied to config.local.toml there).
+# One claude process at a time: the VM also runs the mcp-hub containers.
+[screen]
+parallel = 1
+
+[deep]
+parallel = 1

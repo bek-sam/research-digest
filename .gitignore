@@ -1,0 +1,8 @@
+state.db*
+secrets/
+logs/
+.venv/
+__pycache__/
+.pytest_cache/
+profile_learned.md
+/config.local.toml

@@ -1,0 +1,21 @@
+[Unit]
+Description=Research digest Telegram bot listener
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/research-digest
+EnvironmentFile=/home/ubuntu/research-digest/secrets/digest.env
+Environment=PATH=/home/ubuntu/.local/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/home/ubuntu/research-digest/.venv/bin/python bot.py
+StandardOutput=append:/home/ubuntu/research-digest/logs/bot.log
+StandardError=append:/home/ubuntu/research-digest/logs/bot.log
+Restart=always
+RestartSec=30
+Nice=10
+MemoryHigh=350M
+MemoryMax=500M
+
+[Install]
+WantedBy=multi-user.target
