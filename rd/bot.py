@@ -235,12 +235,18 @@ class Bot:
 
 def serve(store, cfg, poll_timeout: int = 50) -> None:
     bot = Bot(store, cfg)
-    telegram.call("setMyCommands", commands=[{"command": c, "description": d[:256]} for c, d in COMMANDS])
+    try:   # no network at startup must not kill the listener
+        telegram.call("setMyCommands", commands=[{"command": c, "description": d[:256]} for c, d in COMMANDS])
+    except Exception as e:
+        util.log(f"setMyCommands: {e}")
     offset = int(store.kv_get("tg_offset", 0))
     util.log("bot listening")
     while True:
-        store.kv_set("listener_heartbeat", dt.datetime.now(dt.timezone.utc).isoformat())
-        store.commit()
+        try:   # the daily digest can hold the db lock; a missed heartbeat is harmless
+            store.kv_set("listener_heartbeat", dt.datetime.now(dt.timezone.utc).isoformat())
+            store.commit()
+        except Exception as e:
+            util.log(f"heartbeat: {e}")
         try:
             updates = telegram.call("getUpdates", offset=offset, timeout=poll_timeout,
                                     allowed_updates=["message", "callback_query"])
